@@ -45,18 +45,11 @@ jobs:
             -w /pdf \
             minidocks/imagemagick:latest \
             magick resume.pdf \
-              -density 600 \
-              -define png:compression-level=9 \
+              -density 300 \
+              -quality 100 \
+              -colorspace RGB \
               -background white \
               -alpha remove \
-              -colorspace RGB \
-              -normalize \
-              -level 15%,85% \
-              -sharpen 0x1 \
-              -unsharp 2x1.4+0.5+0 \
-              -contrast-stretch 0.5%x0.5% \
-              -resize 3000x \
-              -quality 100 \
               resume.png
 
       - name: Commit generated PDF file
