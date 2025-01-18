@@ -1,1 +1,1 @@
-![](<resume.png?raw=true>)
+![](<resume.pdf?raw=true>)

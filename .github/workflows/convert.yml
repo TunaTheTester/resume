@@ -45,36 +45,12 @@ jobs:
               -sOutputFile=resume.pdf \
               main.pdf
 
-      - name: Convert PDF to PNG
-        run: |
-          docker run --rm \
-            -v "`pwd`":/pdf \
-            -w /pdf \
-            minidocks/imagemagick:latest \
-            magick resume.pdf \
-              -density 9600 \
-              -resample 9600 \
-              -colorspace RGB \
-              -background white \
-              -alpha remove \
-              -resize 100% \
-              -filter Lanczos \
-              -define filter:blur=0.9 \
-              -define filter:support=2.0 \
-              -sharpen 0x1.0 \
-              -unsharp 2x1.2+0.8+0.02 \
-              -contrast-stretch 0x50% \
-              -level 15%,85% \
-              -quality 100 \
-              resume.png
-
       - name: Commit generated PDF file
         id: commit
         run: |
-          if [ -n "$(git status --porcelain resume.png resume.pdf)" ]; then
+          if [ -n "$(git status --porcelain resume.pdf)" ]; then
             git config --local user.email "action[bot]@github.com"
             git config --local user.name "github-actions[bot]"
-            git add resume.png
             git add resume.pdf
             git commit -m "[ci] compile resume"
             git push -u origin main
