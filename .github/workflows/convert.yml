@@ -45,11 +45,12 @@ jobs:
             -w /pdf \
             minidocks/imagemagick:latest \
             magick resume.pdf \
-              -density 900 \
+              -density 300 \
+              -quality 100 \
               -background white \
-              -alpha off \
-              -resize 25% \
-              -quality 90 \
+              -alpha remove \
+              -resize "3840x2160" \
+              -sharpen 0x1.0 \
               -colorspace RGB \
               resume.png
 
