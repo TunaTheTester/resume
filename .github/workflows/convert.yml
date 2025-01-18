@@ -13,7 +13,7 @@ jobs:
       - name: Install TeX Live and other dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y ghostscript imagemagick
+          sudo apt-get install -y ghostscript
 
       - name: Change ImageMagick security policy
         run: |
@@ -62,6 +62,18 @@ jobs:
 
       - name: Convert PDF to PNG
         run: |
+          docker run --rm \
+            -v "`pwd`":/pdf \
+            -w /pdf \
+            minidocks/imagemagick:latest \
+            magick -density 900 \
+              -background white \
+              -alpha off \
+              resume.pdf \
+              -resize 25% \
+              -quality 90 \
+              -colorspace RGB \
+              resume.png
           convert -density 900 -background white -alpha off resume.pdf -resize 25% -quality 90 -colorspace RGB resume.png
 
       - name: Commit generated PDF file
