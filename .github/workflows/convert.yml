@@ -48,7 +48,7 @@ jobs:
 
       - name: Convert LaTeX to HTML
         run: |
-          latex2html -t "Phu Chien's Resume" -split 0 -no_subdir main.tex && ls
+          latex2html -t "Phu Chien's Resume" -split 0 -no_subdir main.tex && mv main.html resume.html
 
       - name: Convert LaTeX to PDF & PNG
         run: |
