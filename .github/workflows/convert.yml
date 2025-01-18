@@ -45,16 +45,19 @@ jobs:
             -w /pdf \
             minidocks/imagemagick:latest \
             magick resume.pdf \
-              -density 9600 \
-              -resample 9600 \
+              -density 1200 \
+              -colorspace RGB \
+              -background white \
+              -alpha remove \
+              -resize 300% \
+              -filter Lanczos \
+              -define filter:blur=0.9 \
+              -define filter:support=2.0 \
               -sharpen 0x1.0 \
               -unsharp 2x1.2+0.8+0.02 \
               -contrast-stretch 0x50% \
               -level 15%,85% \
               -quality 100 \
-              -colorspace RGB \
-              -background white \
-              -alpha remove \
               resume.png
 
       - name: Commit generated PDF file
