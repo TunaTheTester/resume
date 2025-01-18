@@ -10,35 +10,6 @@ jobs:
       - name: Set up Git repository
         uses: actions/checkout@master
 
-      - name: Install TeX Live and other dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y ghostscript
-
-      - name: Change ImageMagick security policy
-        run: |
-          DQT='"' 
-          SRC="rights=${DQT}none${DQT} pattern=${DQT}PDF${DQT}"
-          RPL="rights=${DQT}read\|write${DQT} pattern=${DQT}PDF${DQT}"
-          
-          HGT="name=${DQT}height${DQT} value=${DQT}10KP${DQT}"
-          HGTR="name=${DQT}height${DQT} value=${DQT}128Kp${DQT}"
-          
-          WDT="name=${DQT}width${DQT} value=${DQT}10KP${DQT}"
-          WDTR="name=${DQT}width${DQT} value=${DQT}128Kp${DQT}"
-          
-          MAP="name=${DQT}map${DQT} value=${DQT}512MiB${DQT}"
-          MAPR="name=${DQT}map${DQT} value=${DQT}4GiB${DQT}"
-          
-          MEM="name=${DQT}memory${DQT} value=${DQT}256MiB${DQT}"
-          MEMR="name=${DQT}memory${DQT} value=${DQT}2GiB${DQT}"
-          
-          sudo sed -i "s/$SRC/$RPL/" /etc/ImageMagick-6/policy.xml
-          sudo sed -i "s/$HGT/$HGTR/" /etc/ImageMagick-6/policy.xml
-          sudo sed -i "s/$WDT/$WDTR/" /etc/ImageMagick-6/policy.xml
-          sudo sed -i "s/$MAP/$MAPR/" /etc/ImageMagick-6/policy.xml
-          sudo sed -i "s/$MEM/$MEMR/" /etc/ImageMagick-6/policy.xml
-
       - name: Convert LaTeX to PDF
         run: |
           docker run --rm \
@@ -51,14 +22,21 @@ jobs:
               -file-line-error \
               -pdflatex="pdflatex -synctex=1 -interaction=nonstopmode -file-line-error" \
               main.tex
-          gs -sDEVICE=pdfwrite \
-            -dCompatibilityLevel=1.7 \
-            -dPDFSETTINGS=/prepress \
-            -dNOPAUSE \
-            -dQUIET \
-            -dBATCH \
-            -sOutputFile=resume.pdf \
-            main.pdf
+
+      - name: Optimize PDF output
+        run: |
+          docker run --rm \
+            -v "`pwd`":/pdf \
+            -w /pdf \
+            minidocks/ghostscript:latest \
+            gs -sDEVICE=pdfwrite \
+              -dCompatibilityLevel=1.7 \
+              -dPDFSETTINGS=/prepress \
+              -dNOPAUSE \
+              -dQUIET \
+              -dBATCH \
+              -sOutputFile=resume.pdf \
+              main.pdf
 
       - name: Convert PDF to PNG
         run: |
@@ -66,7 +44,7 @@ jobs:
             -v "`pwd`":/pdf \
             -w /pdf \
             minidocks/imagemagick:latest \
-            magick resume.pdf \ 
+            magick resume.pdf \
               -density 900 \
               -background white \
               -alpha off \
