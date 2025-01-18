@@ -45,15 +45,19 @@ jobs:
             -w /pdf \
             minidocks/imagemagick:latest \
             magick resume.pdf \
-              -density 300 \
+              -density 450 \
               -background white \
               -alpha remove \
               -trim \
               +repage \
               -deskew 40% \
-              -brightness-contrast 0x5 \
-              -resample 300 \
-              -resize 2000x \
+              -normalize \
+              -brightness-contrast 0x10 \
+              -unsharp 0x0.5+0.5+0.05 \
+              -black-threshold 15% \
+              -white-threshold 95% \
+              -resample 400 \
+              -resize 2500x \
               -quality 100 \
               resume.png
 
