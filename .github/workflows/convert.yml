@@ -13,7 +13,7 @@ jobs:
       - name: Install TeX Live and other dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y texlive-full latexml make ghostscript nodejs npm
+          sudo apt-get install -y ghostscript imagemagick
 
       - name: Change ImageMagick security policy
         run: |
@@ -39,19 +39,26 @@ jobs:
           sudo sed -i "s/$MAP/$MAPR/" /etc/ImageMagick-6/policy.xml
           sudo sed -i "s/$MEM/$MEMR/" /etc/ImageMagick-6/policy.xml
 
-      - name: Convert LaTeX to HTML
+      - name: Convert LaTeX to PDF
         run: |
-          latexml main.tex --destination=resume.xml
-          latexmlpost resume.xml \
-            --noindex \
-            --format=html5 \
-            --javascript='https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js' \
-            --css='https://cdnjs.cloudflare.com/ajax/libs/tufte-css/1.8.0/tufte.min.css' \
-            --destination=resume.html
-
-      - name: Convert LaTeX to PDF & PNG
-        run: |
-          pdflatex -output-format=pdf main.tex && mv main.pdf resume.pdf
+          docker run --rm \
+            -v "`pwd`":/pdf \
+            -w /pdf \
+            texlive/texlive:latest \
+            latexmk -pdf \
+              -shell-escape \
+              -interaction=nonstopmode \
+              -file-line-error \
+              -pdflatex="pdflatex -synctex=1 -interaction=nonstopmode -file-line-error" \
+              main.tex
+          gs -sDEVICE=pdfwrite \
+            -dCompatibilityLevel=1.7 \
+            -dPDFSETTINGS=/prepress \
+            -dNOPAUSE \
+            -dQUIET \
+            -dBATCH \
+            -sOutputFile=resume.pdf \
+            main.pdf
 
       - name: Convert PDF to PNG
         run: |
@@ -60,11 +67,10 @@ jobs:
       - name: Commit generated PDF file
         id: commit
         run: |
-          if [ -n "$(git status --porcelain resume.html resume.png resume.pdf)" ]; then
+          if [ -n "$(git status --porcelain resume.png resume.pdf)" ]; then
             git config --local user.email "action[bot]@github.com"
             git config --local user.name "github-actions[bot]"
             git add resume.png
-            git add resume.html
             git add resume.pdf
             git commit -m "[ci] compile resume"
             git push -u origin main

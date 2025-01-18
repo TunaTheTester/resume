@@ -1,15 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>My Resume</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phu Chien's Resume</title>
     <script>
-        $(function(){
-            $("#includedContent").load("resume.html");
-        });
+        const PDF_FILE_PATH = 'resume.pdf';
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background: #f0f0f0;
+        }
+        #pdf-container {
+            width: 100%;
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+        }
+        .page {
+            margin: 10px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            background: white;
+        }
+        #error-message {
+            color: red;
+            padding: 20px;
+            text-align: center;
+            font-family: sans-serif;
+        }
+    </style>
 </head>
 <body>
-    <div id="includedContent"></div>
+<div id="pdf-container"></div>
+
+<script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    async function renderPDF(pdfUrl) {
+        const container = document.getElementById('pdf-container');
+
+        try {
+            const loadingTask = pdfjsLib.getDocument(pdfUrl);
+            const pdf = await loadingTask.promise;
+
+            // Get viewport width
+            const viewportWidth = Math.max(container.clientWidth, 800);
+
+            // Render all pages
+            for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                const page = await pdf.getPage(pageNum);
+
+                // Calculate scale to fit width while maintaining aspect ratio
+                const viewport = page.getViewport({ scale: 1 });
+                const scale = (viewportWidth * 0.95) / viewport.width;
+                const scaledViewport = page.getViewport({ scale });
+
+                // Create canvas for this page
+                const canvas = document.createElement('canvas');
+                canvas.className = 'page';
+                canvas.height = scaledViewport.height;
+                canvas.width = scaledViewport.width;
+                container.appendChild(canvas);
+
+                // Render PDF page
+                const context = canvas.getContext('2d');
+                await page.render({
+                    canvasContext: context,
+                    viewport: scaledViewport
+                }).promise;
+            }
+        } catch (error) {
+            container.innerHTML = `
+                    <div id="error-message">
+                        <h2>Error Loading PDF</h2>
+                        <p>Please check if the PDF path is correct: ${pdfUrl}</p>
+                        <p>Error details: ${error.message}</p>
+                    </div>`;
+            console.error('Error rendering PDF:', error);
+        }
+    }
+
+    window.onload = () => renderPDF(PDF_FILE_PATH);
+</script>
 </body>
 </html>
