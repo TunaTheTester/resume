@@ -66,15 +66,14 @@ jobs:
             -v "`pwd`":/pdf \
             -w /pdf \
             minidocks/imagemagick:latest \
-            magick -density 900 \
+            magick resume.pdf \ 
+              -density 900 \
               -background white \
               -alpha off \
-              resume.pdf \
               -resize 25% \
               -quality 90 \
               -colorspace RGB \
               resume.png
-          convert -density 900 -background white -alpha off resume.pdf -resize 25% -quality 90 -colorspace RGB resume.png
 
       - name: Commit generated PDF file
         id: commit
