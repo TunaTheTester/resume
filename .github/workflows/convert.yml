@@ -12,7 +12,7 @@ jobs:
 
       - name: Pull containers in parallel
         run: |
-          docker pull texlive/texlive:latest &
+          docker pull texlive/texlive:latest-minimal &
           docker pull minidocks/ghostscript:latest &
           docker pull pdf2htmlex/pdf2htmlex:0.18.8.rc2-master-20200820-ubuntu-20.04-x86_64
           docker pull minidocks/imagemagick:latest &
@@ -20,7 +20,7 @@ jobs:
 
       - name: Convert LaTeX to PDF
         run: |
-          docker run --rm -v "`pwd`":/pdf -w /pdf texlive/texlive:latest \
+          docker run --rm -v "`pwd`":/pdf -w /pdf texlive/texlive:latest-minimal \
             latexmk -pdf \
               -shell-escape \
               -interaction=nonstopmode \
