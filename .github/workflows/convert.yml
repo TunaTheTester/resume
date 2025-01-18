@@ -4,8 +4,21 @@ on:
     branches:
       - 'main'
 jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        container:
+          - texlive/texlive:latest
+          - minidocks/ghostscript:latest
+          - minidocks/imagemagick:latest
+    steps:
+      - name: Pull containers in parallel
+        run: docker pull ${{ matrix.container }}
+
   build_latex:
     runs-on: ubuntu-latest
+    needs: prepare
     steps:
       - name: Set up Git repository
         uses: actions/checkout@master
@@ -45,11 +58,12 @@ jobs:
             -w /pdf \
             minidocks/imagemagick:latest \
             magick resume.pdf \
-              -density 1200 \
+              -density 9600 \
+              -resample 9600 \
               -colorspace RGB \
               -background white \
               -alpha remove \
-              -resize 300% \
+              -resize 100% \
               -filter Lanczos \
               -define filter:blur=0.9 \
               -define filter:support=2.0 \
