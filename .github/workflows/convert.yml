@@ -12,15 +12,15 @@ jobs:
 
       - name: Pull containers in parallel
         run: |
-          docker pull texlive/texlive:latest-minimal &
-          docker pull minidocks/ghostscript:latest &
-          docker pull pdf2htmlex/pdf2htmlex:0.18.8.rc2-master-20200820-ubuntu-20.04-x86_64
-          docker pull minidocks/imagemagick:latest &
+          docker pull texlive/texlive@sha256:45cdde7e87aff38479fae2ed740f1a5959d850f1ecc3fea29d4e934a44489a10 &
+          docker pull minidocks/ghostscript@sha256:ff0742e03ab544c8a2c8ab3e3ce72d4039463a47076ae4845955de8044b26576 &
+          docker pull pdf2htmlex/pdf2htmlex@sha256:83899e54f842fda9ca531aea6f30342b0cab4933a246dfc336d63b3e696c9990 &
+          docker pull minidocks/imagemagick@sha256:a716b844e801e76e0ae48f168d2178ef29c8834994ce90f3835197d30ecc34be &
           wait
 
       - name: Convert LaTeX to PDF
         run: |
-          docker run --rm -v "`pwd`":/pdf -w /pdf texlive/texlive:latest-minimal \
+          docker run --rm -v "`pwd`":/pdf -w /pdf texlive/texlive@sha256:45cdde7e87aff38479fae2ed740f1a5959d850f1ecc3fea29d4e934a44489a10 \
             latexmk -pdf \
               -shell-escape \
               -interaction=nonstopmode \
@@ -30,7 +30,7 @@ jobs:
 
       - name: Optimize PDF output
         run: |
-          docker run --rm -v "`pwd`":/pdf -w /pdf minidocks/ghostscript:latest \
+          docker run --rm -v "`pwd`":/pdf -w /pdf minidocks/ghostscript@sha256:ff0742e03ab544c8a2c8ab3e3ce72d4039463a47076ae4845955de8044b26576 \
             gs -sDEVICE=pdfwrite \
               -dCompatibilityLevel=1.7 \
               -dPDFSETTINGS=/prepress \
@@ -42,13 +42,13 @@ jobs:
 
       - name: Convert PDF into PNG
         run: |
-          docker run --rm -v "`pwd`":/pdf -w /pdf minidocks/imagemagick:latest \
+          docker run --rm -v "`pwd`":/pdf -w /pdf minidocks/imagemagick@sha256:a716b844e801e76e0ae48f168d2178ef29c8834994ce90f3835197d30ecc34be \
             magick convert -verbose -density 150 -trim resume.pdf -quality 100 -flatten -sharpen 0x1.0 resume.png
 
       - name: Convert PDF into HTML
         run: |
           docker run --rm -v "`pwd`":/pdf -w /pdf \
-            pdf2htmlex/pdf2htmlex:0.18.8.rc2-master-20200820-ubuntu-20.04-x86_64 --zoom 1.3 resume.pdf
+            pdf2htmlex/pdf2htmlex@sha256:83899e54f842fda9ca531aea6f30342b0cab4933a246dfc336d63b3e696c9990 --zoom 1.3 resume.pdf
 
       - name: Commit generated PDF file
         id: commit
