@@ -45,12 +45,20 @@ jobs:
             -w /pdf \
             minidocks/imagemagick:latest \
             magick resume.pdf \
-              -density 300 \
+              -density 600 \
               -quality 100 \
               -background white \
               -alpha remove \
-              -resize "3840x2160" \
-              -sharpen 0x1.0 \
+              -resize 3840x2160 \
+              -filter Lanczos \
+              -define filter:blur=0.9 \
+              -define filter:support=2.0 \
+              -normalize \
+              -sharpen 0x0.5 \
+              -contrast-stretch 0 \
+              -unsharp 1.5x1+0.7+0.02 \
+              -colors 256 \
+              -dither Riemersma \
               -colorspace RGB \
               resume.png
 
