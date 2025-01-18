@@ -10,8 +10,17 @@ jobs:
       - name: Set up Git repository
         uses: actions/checkout@master
 
-      - name: Install ghostscript
-        run: sudo apt install ghostscript
+      - name: Install TeX Live and other dependencies
+        run: |
+          sudo apt-get update &&
+          sudo apt-get install -y \
+            texlive \
+            texlive-latex-extra \
+            texlive-fonts-recommended \
+            latex2html \
+            ghostscript \
+            poppler-utils \
+            imagemagick
 
       - name: Change ImageMagick security policy
         run: |
@@ -37,19 +46,17 @@ jobs:
           sudo sed -i "s/$MAP/$MAPR/" /etc/ImageMagick-6/policy.xml
           sudo sed -i "s/$MEM/$MEMR/" /etc/ImageMagick-6/policy.xml
 
-      - name: Compile LaTeX document
-        uses: xu-cheng/latex-action@master
-        with:
-          root_file: main.tex
+      - name: Convert LaTeX to HTML
+        run: |
+          latex2html -t "Phu Chien's Resume" -split 0 -no_subdir main.tex && ls
 
-      - name: Enhance PDF file & rename
-        run: gs -sDEVICE=pdfwrite -sOutputFile='resume.pdf' -dNOPAUSE -dBATCH main.pdf
-
-      - name: Convert PDF to HTML
-        run: docker run --rm -v "`pwd`":/pdf -w /pdf pdf2htmlex/pdf2htmlex:0.18.8.rc2-master-20200820-alpine-3.12.0-x86_64 --zoom 1.3 resume.pdf
+      - name: Convert LaTeX to PDF & PNG
+        run: |
+          pdflatex -output-format=pdf main.tex && mv main.pdf resume.pdf
 
       - name: Convert PDF to PNG
-        run: convert -density 900 -background white -alpha off resume.pdf -resize 25% -quality 90 -colorspace RGB resume.png
+        run: |
+          convert -density 900 -background white -alpha off resume.pdf -resize 25% -quality 90 -colorspace RGB resume.png
 
       - name: Commit generated PDF file
         id: commit
