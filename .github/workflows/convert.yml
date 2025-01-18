@@ -47,6 +47,8 @@ jobs:
             magick resume.pdf \
               -density 9600 \
               -resample 9600 \
+              -depth 32 \
+              -colors 32 \
               -quality 100 \
               -colorspace RGB \
               -background white \
