@@ -17,6 +17,7 @@ jobs:
           docker pull natic/pdf2html@sha256:f1df273a01e0015d35d9ecc8c66cca397254ae064e5fc4366dad8c208f34ce36 &
           docker pull minidocks/imagemagick@sha256:1d2d8726608b109736a9011bb83df00e8171cfaca0e9a04cd6d33c8e231df017 &
           wait
+
       - name: Convert LaTeX to PDF
         run: |
           docker run --rm -v "`pwd`":/pdf -w /pdf \
@@ -27,6 +28,7 @@ jobs:
               -file-line-error \
               -pdflatex="pdflatex -synctex=1 -interaction=nonstopmode -file-line-error" \
               main.tex
+
       - name: Optimize PDF output
         run: |
           docker run --rm -v "`pwd`":/pdf -w /pdf \
@@ -39,11 +41,13 @@ jobs:
               -dBATCH \
               -sOutputFile=resume.pdf \
               main.pdf
+
       - name: Convert PDF into PNG
         run: |
           docker run --rm -v "`pwd`":/pdf -w /pdf \
             minidocks/imagemagick@sha256:1d2d8726608b109736a9011bb83df00e8171cfaca0e9a04cd6d33c8e231df017 \
             magick convert -verbose -density 150 -trim resume.pdf -quality 100 -flatten -sharpen 0x1.0 resume.png
+
       - name: Convert PDF into HTML
         run: |
           docker run --rm -v "`pwd`":/pdf -w /pdf \
