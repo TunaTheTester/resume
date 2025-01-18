@@ -45,8 +45,8 @@ jobs:
             -w /pdf \
             minidocks/imagemagick:latest \
             magick resume.pdf \
-              -density 1200 \
-              -resample 1200 \
+              -density 9600 \
+              -resample 9600 \
               -quality 100 \
               -colorspace RGB \
               -background white \
