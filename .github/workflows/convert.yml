@@ -5,7 +5,7 @@ on:
       - 'main'
 jobs:
   build_latex:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Set up Git repository
         uses: actions/checkout@master
@@ -14,15 +14,12 @@ jobs:
         run: |
           docker pull texlive/texlive:latest &
           docker pull minidocks/ghostscript:latest &
-          docker pull minidocks/imagemagick:latest &
+          docker pull pdf2htmlex/pdf2htmlex:0.18.8.rc2-master-20200820-ubuntu-20.04-x86_64
           wait
 
       - name: Convert LaTeX to PDF
         run: |
-          docker run --rm \
-            -v "`pwd`":/pdf \
-            -w /pdf \
-            texlive/texlive:latest \
+          docker run --rm -v "`pwd`":/pdf -w /pdf texlive/texlive:latest \
             latexmk -pdf \
               -shell-escape \
               -interaction=nonstopmode \
@@ -32,10 +29,7 @@ jobs:
 
       - name: Optimize PDF output
         run: |
-          docker run --rm \
-            -v "`pwd`":/pdf \
-            -w /pdf \
-            minidocks/ghostscript:latest \
+          docker run --rm -v "`pwd`":/pdf -w /pdf minidocks/ghostscript:latest \
             gs -sDEVICE=pdfwrite \
               -dCompatibilityLevel=1.7 \
               -dPDFSETTINGS=/prepress \
@@ -45,13 +39,21 @@ jobs:
               -sOutputFile=resume.pdf \
               main.pdf
 
+      - name: Convert PDF into HTML
+        run: |
+          docker run --rm -v "`pwd`":/pdf -w /pdf \
+            pdf2htmlex/pdf2htmlex:0.18.8.rc2-master-20200820-ubuntu-20.04-x86_64 \
+            --zoom 1.3 \
+            resume.pdf
+
       - name: Commit generated PDF file
         id: commit
         run: |
-          if [ -n "$(git status --porcelain resume.pdf)" ]; then
+          if [ -n "$(git status --porcelain resume.pdf resume.html)" ]; then
             git config --local user.email "action[bot]@github.com"
             git config --local user.name "github-actions[bot]"
             git add resume.pdf
+            git add resume.html
             git commit -m "[ci] compile resume"
             git push -u origin main
           else
