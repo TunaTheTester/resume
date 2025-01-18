@@ -4,24 +4,18 @@ on:
     branches:
       - 'main'
 jobs:
-  prepare:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        container:
-          - texlive/texlive:latest
-          - minidocks/ghostscript:latest
-          - minidocks/imagemagick:latest
-    steps:
-      - name: Pull containers in parallel
-        run: docker pull ${{ matrix.container }}
-
   build_latex:
     runs-on: ubuntu-latest
-    needs: prepare
     steps:
       - name: Set up Git repository
         uses: actions/checkout@master
+
+      - name: Pull containers in parallel
+        run: |
+          docker pull texlive/texlive:latest &
+          docker pull minidocks/ghostscript:latest &
+          docker pull minidocks/imagemagick:latest &
+          wait
 
       - name: Convert LaTeX to PDF
         run: |
