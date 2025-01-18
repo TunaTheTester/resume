@@ -12,15 +12,8 @@ jobs:
 
       - name: Install TeX Live and other dependencies
         run: |
-          sudo apt-get update &&
-          sudo apt-get install -y \
-            texlive \
-            texlive-latex-extra \
-            texlive-fonts-recommended \
-            latex2html \
-            ghostscript \
-            poppler-utils \
-            imagemagick
+          sudo apt-get update
+          sudo apt-get install -y texlive-full latexml make ghostscript nodejs npm
 
       - name: Change ImageMagick security policy
         run: |
@@ -48,7 +41,13 @@ jobs:
 
       - name: Convert LaTeX to HTML
         run: |
-          latex2html -t "Phu Chien's Resume" -split 0 -no_subdir main.tex && mv main.html resume.html
+          latexml main.tex --destination=resume.xml
+          latexmlpost resume.xml \
+            --noindex \
+            --format=html5 \
+            --javascript='https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js' \
+            --css='https://cdnjs.cloudflare.com/ajax/libs/tufte-css/1.8.0/tufte.min.css' \
+            --destination=resume.html
 
       - name: Convert LaTeX to PDF & PNG
         run: |
