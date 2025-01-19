@@ -5,23 +5,23 @@ on:
       - 'main'
 jobs:
   build_latex:
-    runs-on: ubuntu-22.04-arm
+    runs-on: ubuntu-22.04
     steps:
       - name: Set up Git repository
         uses: actions/checkout@master
 
       - name: Pull containers in parallel
         run: |
-          docker pull texlive/texlive@sha256:d757ca16c2bd415fb3b7703216685b58ad3d11445e60a0f4e830e26b815f4987 &
-          docker pull minidocks/ghostscript@sha256:bc21cefb6b0a68f137b8cf2a180db5300a498fef370f2b20d034f48fa815e345 &
-          docker pull natic/pdf2html@sha256:f1df273a01e0015d35d9ecc8c66cca397254ae064e5fc4366dad8c208f34ce36 &
-          docker pull minidocks/imagemagick@sha256:1d2d8726608b109736a9011bb83df00e8171cfaca0e9a04cd6d33c8e231df017 &
+          podman pull docker.io/texlive/texlive@sha256:45cdde7e87aff38479fae2ed740f1a5959d850f1ecc3fea29d4e934a44489a10 &
+          podman pull docker.io/minidocks/ghostscript@sha256:ff0742e03ab544c8a2c8ab3e3ce72d4039463a47076ae4845955de8044b26576 &
+          podman pull docker.io/pdf2htmlex/pdf2htmlex@sha256:83899e54f842fda9ca531aea6f30342b0cab4933a246dfc336d63b3e696c9990 &
+          podman pull docker.io/minidocks/imagemagick@sha256:a716b844e801e76e0ae48f168d2178ef29c8834994ce90f3835197d30ecc34be &
           wait
 
       - name: Convert LaTeX to PDF
         run: |
-          docker run --rm -v "`pwd`":/pdf -w /pdf \
-            texlive/texlive@sha256:d757ca16c2bd415fb3b7703216685b58ad3d11445e60a0f4e830e26b815f4987 \
+          podman run --rm -v "`pwd`:/pdf:Z" -w /pdf \
+            docker.io/texlive/texlive@sha256:45cdde7e87aff38479fae2ed740f1a5959d850f1ecc3fea29d4e934a44489a10 \
             latexmk -pdf \
               -shell-escape \
               -interaction=nonstopmode \
@@ -31,8 +31,8 @@ jobs:
 
       - name: Optimize PDF output
         run: |
-          docker run --rm -v "`pwd`":/pdf -w /pdf \
-            minidocks/ghostscript@sha256:bc21cefb6b0a68f137b8cf2a180db5300a498fef370f2b20d034f48fa815e345 \
+          podman run --rm -v "`pwd`:/pdf:Z" -w /pdf \
+            docker.io/minidocks/ghostscript@sha256:ff0742e03ab544c8a2c8ab3e3ce72d4039463a47076ae4845955de8044b26576 \
             gs -sDEVICE=pdfwrite \
               -dCompatibilityLevel=1.7 \
               -dPDFSETTINGS=/prepress \
@@ -44,15 +44,15 @@ jobs:
 
       - name: Convert PDF into PNG
         run: |
-          docker run --rm -v "`pwd`":/pdf -w /pdf \
-            minidocks/imagemagick@sha256:1d2d8726608b109736a9011bb83df00e8171cfaca0e9a04cd6d33c8e231df017 \
+          podman run --rm -v "`pwd`:/pdf:Z" -w /pdf \
+            docker.io/minidocks/imagemagick@sha256:a716b844e801e76e0ae48f168d2178ef29c8834994ce90f3835197d30ecc34be \
             magick convert -verbose -density 150 -trim resume.pdf -quality 100 -flatten -sharpen 0x1.0 resume.png
 
       - name: Convert PDF into HTML
         run: |
-          docker run --rm -v "`pwd`":/pdf -w /pdf \
-            natic/pdf2html@sha256:f1df273a01e0015d35d9ecc8c66cca397254ae064e5fc4366dad8c208f34ce36 \
-            pdf2htmlEX --zoom 1.3 resume.pdf
+          podman run --rm -v "`pwd`:/pdf:Z" -w /pdf \
+            docker.io/pdf2htmlex/pdf2htmlex@sha256:83899e54f842fda9ca531aea6f30342b0cab4933a246dfc336d63b3e696c9990 \
+            --zoom 1.3 resume.pdf
 
       - name: Commit generated PDF file
         id: commit
