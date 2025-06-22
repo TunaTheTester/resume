@@ -77,3 +77,32 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 
 .DS_Store
+*.jar
+!gradle-wrapper.jar
+
+# User local IDEA configuration files
+.idea/
+.run/
+
+# IntelliJ project
+*.iml
+
+# User local IDEA run configurations
+
+# Build output & caches for IntelliJ plugin development
+build/
+idea-sandbox/
+.gradle/
+
+## File-based project format:
+
+# IntelliJ
+/out/
+.intellijPlatform
+
+# JavaScript resources
+src/main/resources/dist/*
+
+# VSCode langserver artifacts
+/bin/
+/src/main/kotlin/com/sourcegraph/cody/agent/protocol_generated/*
