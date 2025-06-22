@@ -46,7 +46,10 @@ jobs:
         run: |
           podman run --rm -v "`pwd`:/pdf:Z" -w /pdf \
             docker.io/minidocks/imagemagick@sha256:a716b844e801e76e0ae48f168d2178ef29c8834994ce90f3835197d30ecc34be \
-            magick convert -verbose -density 150 -trim resume.pdf -quality 100 -flatten -append -sharpen 0x1.0 resume.png
+            magick convert -density 150 -trim -colorspace sRGB resume.pdf -quality 100 -flatten -sharpen 0x1.0 resume-%03d.png
+          podman run --rm -v "`pwd`:/pdf:Z" -w /pdf \
+            docker.io/minidocks/imagemagick@sha256:a716b844e801e76e0ae48f168d2178ef29c8834994ce90f3835197d30ecc34be \
+            magick convert -append resume-*.png resume.png
 
       - name: Convert PDF into HTML
         run: |
