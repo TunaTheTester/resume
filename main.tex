@@ -91,44 +91,40 @@
     {VNG Corporation - Zalo}{Ho Chi Minh City, Vietnam}
     {Senior Software Engineer}{Mar 2025 - Present}
     \resumeItemListStart
-    \resumeItem{Zalo Backend Storage}
-    {Enhanced service monitoring to accurately measure and report system SLA, SLI, and SLO. Migrated from in-house queue to Kafka, resolving queue overflow issues and improving system scalability and reliability.}
-    \resumeItem{Event Reminder Service}
-    {Designed and implemented a distributed event reminder service using Kafka and Apache Ignite, enabling scalable, reliable scheduling and delayed event processing.}
+    \resumeItem{System Monitoring \& Observability}
+    {Enhanced service monitoring to accurately measure and report system SLA, SLI, and SLO for backend storage services.}
+    \resumeItem{Infrastructure Migration}
+    {Improved system scalability and eliminated queue overflow issues by migrating from in-house queue solution to Kafka infrastructure. Due to lack of scheduling capabilities in Kafka, designed and implemented distributed event reminder service using Apache Ignite to handle delayed event processing and resend events to Kafka.}
+    \resumeItem{Code Quality \& Architecture}
+    {Refactored existing codebase to improve testability and maintainability by applying modern technologies such as dependency injection, enhancing system modularity and development efficiency.}
     \resumeItemListEnd
 
     \resumeSubheading
     {MoMo}{Ho Chi Minh City, Vietnam}
-    {Software Engineer}{Sep 2023 - Mar 2025}
+    {Software Engineer}{Jun 2022 - Mar 2025}
     \resumeItemListStart
-    \resumeItem{Lac Xi 2024}
-    {Optimized MoMo's critical gift verification system to handle peak loads during a high-traffic campaign, ensuring a seamless user experience by implementing caching strategies and streamlining workflows.}
-    \resumeItem{Authentication Gateway}
-    {Built a secure gateway system with Keycloak authentication and a custom rule-based authorization engine to control access to sensitive production configurations. A reverse proxy streamlines request routing, ensuring efficient and secure access management.}
+    \resumeItem{Performance Optimization}
+    {Achieved 95\% performance improvement (4s → 200ms) on promotion platform by developing streaming mechanism to overcome Firestore index limitations and return data immediately when sufficient results are available, reducing Firestore fees by 80\%.}
+    \resumeItem{System Scalability}
+    {Scaled mission platform to handle 20k RPS for status API with only 4 1-core pods and processed 6k+ user events/second in production with sub-200ms processing through complete re-architecture and refactoring, reducing user complaints by 50\%. Optimized caching performance by rewriting Lua scripts executed in Redis to reduce network round trips.}
+    \resumeItem{Technology Migration \& Load Handling}
+    {Enhanced system performance by migrating user ranking system from Bigtable to HBase, applying modern technique: asynchronous parameterized logging, optimized thread pools, caching, rate limiting, and retry backoff mechanisms. Optimized gift verification system for high-traffic Lac Xi campaigns by reducing redundant steps that could affect system stability.}
+    \resumeItem{Security \& Distributed Systems}
+    {Built secure authentication gateway with Keycloak integration and custom rule-based authorization engine. Designed clustered in-memory user segmentation system using Apache Ignite with PostgreSQL and consistent hashing. Implemented user-to-instance routing gateway with consistent hashing technique to reduce huge data movement and improve cache hit rates during large-scale campaigns.}
+    \resumeItem{System Reliability \& Developer Experience}
+    {Improved promotion \& gamification system reliability by refactoring core idempotency library, eliminating duplicate gift dispatching. Streamlined configuration tools with error-detection capabilities, reducing complexity and human errors for internal teams.}
+    \resumeItem{Platform Maintenance}
+    {Maintained and enhanced donation platform (Heo Dat MoMo) while resolving technical debt and developing new user engagement features with virtual rewards system.}
+    \resumeItem{Framework Development}
+    {Built Spring-like annotation framework leveraging existing Vert.x and Dagger 2 common libraries to reduce redundant code when initializing new services, improving development efficiency and code maintainability within the team.}
     \resumeItemListEnd
 
     \resumeSubheading
     {MoMo}{Ho Chi Minh City, Vietnam}
-    {Junior Software Engineer}{Jun 2022 - Sep 2023}
-    \resumeItemListStart
-    \resumeItem{Heo Dat MoMo - Donation Platform}
-    {Maintained and enhanced Heo Dat MoMo, a popular charitable giving feature in the MoMo e-wallet, by ensuring service stability and developing a new user engagement feature with a virtual pig \enquote{growth} and rewards system.}
-    \resumeItem{Promotion Platform}
-    {Significantly improved the performance of MoMo's promotion platform by overcoming Firestore index limitations. Developed a streaming mechanism that reduced loading times by 95\%, from 4 seconds to under 200ms, greatly enhancing the user experience.}
-    \resumeItem{Lac Xi 2023}
-    {Developed a high-performance inventory system using Google Cloud Bigtable for MoMo's Lac Xi 2023 campaign, ensuring accurate reward distribution to millions of users under peak load.}
-    \resumeItem{Mission Platform}
-    {Took ownership of and re-architected MoMo's mission platform, a legacy system, resulting in a more performant and scalable solution while preserving all existing features. This revamp achieved more than 6,000 user events per second with sub-200ms reward processing in production and reduced by a half in user complaints, demonstrating a significant improvement in user satisfaction.}
-    \resumeItem{Idempotency Library}
-    {Improved the reliability and performance of MoMo's reward distribution system by refactoring a core idempotency library, eliminating erroneous duplicate rewards and creating a more robust promotion/gamification experience for users.}
-    \resumeItemListEnd
-
-    \resumeSubheading
-    {MoMo}{Ho Chi Minh City, Vietnam}
-    {ITC Trainee (Software Engineering Intern)}{Nov 2021 - Jun 2022}
+    {ITC Trainee - MoMo Talent Program}{Nov 2021 - Jun 2022}
     \resumeItemListStart
     \resumeItem{Lac Xi 2022}
-    {Built high-availability microservices from scratch under instruction. Designed a generic history format for seamless integration with other services, using REST APIs for mobile integration. Leveraged GCP's infrastructures (BigTable, BigQuery, Cloud Firestore, and Cloud Pubsub) to ensure reliable communication and system stability.}
+    {Built high-availability microservices from scratch with seamless cross-service integration using GCP infrastructure (BigTable, BigQuery, Cloud Firestore, Cloud Pubsub).}
     \resumeItemListEnd
 
     \resumeSubHeadingListEnd
