@@ -76,7 +76,7 @@
 
 
 %-----------EDUCATION-----------------
-    \section{Education}
+    \section{Education}\label{sec:education}
     \resumeSubHeadingListStart
     \resumeSubheading
     {University of Science - VNUHCM}{Ho Chi Minh City, Vietnam}
@@ -85,7 +85,7 @@
 
 
 %-----------EXPERIENCE-----------------
-    \section{Experience}
+    \section{Experience}\label{sec:experience}
     \resumeSubHeadingListStart
 
     \resumeSubheading
@@ -93,11 +93,11 @@
     {Senior Software Engineer}{Mar 2025 - Present}
     \resumeItemListStart
     \resumeItem{System Monitoring \& Observability}
-    {Enhanced service monitoring to accurately measure and report system SLA, SLI, and SLO for backend storage services.}
+    {Led implementation of service monitoring framework to measure and report system SLA, SLI, and SLO for backend storage services.}
     \resumeItem{Infrastructure Migration}
-    {Improved system scalability and eliminated queue overflow issues by migrating from in-house queue solution to Kafka. Designed and implemented distributed event delayed service using Apache Ignite to overcome the lack of scheduling capabilities in Kafka.}
+    {Owned migration from in-house queue to Kafka, eliminating overflow issues and improving scalability. Architected distributed event delayed service using Apache Ignite to address Kafka's scheduling limitations.}
     \resumeItem{Code Quality \& Architecture}
-    {Refactored existing codebase to improve testability and maintainability, enhancing system modularity and development efficiency.}
+    {Drove codebase refactoring initiative to improve testability and maintainability, enhancing system modularity and development efficiency.}
     \resumeItemListEnd
 
     \resumeSubheading
@@ -105,28 +105,28 @@
     {Software Engineer}{Nov 2021 - Mar 2025}
     \resumeItemListStart
     \resumeItem{Performance Optimization}
-    {Achieved \textbf{95\%} performance improvement \textbf{(4s → 200ms)} on promotion platform by developing streaming mechanism to overcome Firestore index limitations, reducing Firestore cost by \textbf{80\%}.}
+    {Architected streaming mechanism to overcome Firestore index limitations, achieving \textbf{95\%} performance improvement \textbf{(4s → 200ms)} on promotion platform and reducing Firestore cost by \textbf{80\%}.}
     \resumeItem{System Scalability}
-    {Scaled mission platform to handle \textbf{20k} RPS for status API and processed \textbf{6k+} user events/second in production with \textbf{sub-200ms} processing through complete re-architecture and refactoring, reducing user complaints by \textbf{50\%}. Optimized caching performance by rewriting Lua scripts executed in Redis to reduce network round trips.}
+    {Led complete re-architecture of mission platform to handle \textbf{20k} RPS for status API and process \textbf{6k+} user events/second with \textbf{sub-200ms} latency, reducing user complaints by \textbf{50\%}. Optimized Redis caching by rewriting Lua scripts to reduce network overhead.}
     \resumeItem{Technology Migration \& Load Handling}
-    {Reduced cost by migrating user ranking system from Bigtable to HBase, applying modern technique: asynchronous parameterized logging, optimized thread pools, caching, rate limiting, and retry backoff mechanisms to enhance performance. Optimized gift verification system for high-traffic Lac Xi campaigns by reducing redundant steps that could affect system stability.}
+    {Executed Bigtable to HBase migration for cost reduction, implementing modern performance techniques: asynchronous logging, thread pool optimization, caching, rate limiting, and retry mechanisms. Streamlined gift verification system for high-traffic Lac Xi campaigns by eliminating redundant processes.}
     \resumeItem{Security \& Distributed Systems}
-    {Built secure authentication gateway with Keycloak integration and custom rule-based authorization engine. Designed clustered in-memory user segmentation system using Apache Ignite, PostgreSQL and consistent hashing. Implemented user-to-instance routing gateway with consistent hashing technique to reduce huge data movement and improve cache hit rates during large-scale campaigns.}
+    {Built secure authentication gateway with Keycloak integration and custom authorization engine. Architected clustered user segmentation system using Apache Ignite, PostgreSQL and consistent hashing. Implemented routing gateway with consistent hashing to optimize cache hit rates during large-scale campaigns.}
     \resumeItem{System Reliability \& Developer Experience}
-    {Improved promotion \& gamification system reliability by refactoring core idempotency library, eliminating duplicate gift dispatching. Streamlined configuration tools with error-detection capabilities, reducing complexity and human errors for internal teams.}
+    {Enhanced system reliability by refactoring core idempotency library, eliminating duplicate gift dispatching. Built configuration tools with error-detection capabilities, reducing operational complexity for internal teams.}
     \resumeItem{Platform Maintenance}
-    {Maintained and enhanced donation platform (Heo Dat MoMo) while resolving technical debt and developing new user engagement features.}
+    {Owned donation platform (Heo Dat MoMo) maintenance and feature development, resolving technical debt while building new user engagement features.}
     \resumeItem{Framework Development}
-    {Built Spring-like annotation framework leveraging existing Vert.x and Dagger 2 common libraries to reduce redundant code when initializing new services, improving development efficiency and code maintainability within the team.}
+    {Designed Spring-like annotation framework using Vert.x and Dagger 2 to eliminate redundant service initialization code, improving team development efficiency and maintainability.}
     \resumeItem{Foundation \& Early Development}
-    {Joined MoMo Talent Program where trained in microservices development and participated in Lac Xi 2022 campaign, building high-availability microservices with seamless cross-service integration using GCP infrastructure (BigTable, BigQuery, Firestore, Pubsub).}
+    {Completed MoMo Talent Program microservices training and contributed to Lac Xi 2022 campaign, building high-availability microservices with GCP infrastructure integration (BigTable, BigQuery, Firestore, Pubsub).}
     \resumeItemListEnd
 
     \resumeSubHeadingListEnd
 
 
 %-----------PROJECTS-----------------
-    \section{Projects}
+    \section{Projects}\label{sec:projects}
     \resumeSubHeadingListStart
     \resumeSubItem{Drive Reader}{C\#/.NET. Reads FAT32/NTFS file systems using Windows low-level APIs, reconstructs the full directory tree of a given disk. \href{https://github.com/phuchienngo/DriveReader}{\faGithub\ }}
     \resumeSubItem{SimpleKV}{Java/Kotlin. High-performance in-memory key-value database with I/O multiplexing, consistent hashing, LMAX Disruptor, buddy allocation for zero GC, and scalable DashTable. \href{https://github.com/phuchienngo/simplekv}{\faGithub\ }}
@@ -135,7 +135,7 @@
 
 %
 %--------PROGRAMMING SKILLS------------
-    \section{Programming Skills}
+    \section{Programming Skills}\label{sec:programming-skills}
     \resumeSubHeadingListStart
     \resumeSubItem{Languages}
     {Java, Kotlin, Go, Python, JavaScript, SQL}
